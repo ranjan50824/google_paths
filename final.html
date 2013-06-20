@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Directions service (complex)</title>
+    <link href="/maps/documentation/javascript/examples/default.css" rel="stylesheet">
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+    <script>
+var directionsDisplay;
+var directionsService = new google.maps.DirectionsService();
+var map;
+
+function initialize() {
+    directionsDisplay = new google.maps.DirectionsRenderer();
+    var locations = [
+        ['<strong>Kaveri</strong><br>N Block<br>Telefono: 06121128045<br>Fax: 0668300813', 13.015072300000000000, 77.565546900000070000, 2],
+        ['<strong>Vedaas Solutions</strong><br>Mess-C<br>Telefono: 0668806226<br>Fax: 0668300813', 13.015072300000000000, 77.565546900000070000, 1]
+    ];
+
+    var infowindow = new google.maps.InfoWindow();
+var myOptions = {
+    zoom: 10,
+    center: new google.maps.LatLng(13.015072300000000000, 77.565546900000070000),
+    mapTypeControl: true,
+    mapTypeControlOptions: {style: google.maps.MapTypeControlStyle.DROPDOWN_MENU},
+    navigationControl: true,
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+  }
+  map = new google.maps.Map(document.getElementById("map"),
+                                myOptions);
+    var bounds = new google.maps.LatLngBounds();
+
+    for (i = 0; i < locations.length; i++) {
+        marker = new google.maps.Marker({
+            position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+            map: map
+        });
+
+        bounds.extend(marker.position);
+
+        google.maps.event.addListener(marker, 'click', (function (marker, i) {
+            return function () {
+                infowindow.setContent(locations[i][0]);
+                infowindow.open(map, marker);
+            }
+        })(marker, i));
+    }
+
+    map.fitBounds(bounds);
+
+    var listener = google.maps.event.addListener(map, "idle", function () {
+        map.setZoom(17);
+        google.maps.event.removeListener(listener);
+    });
+
+    directionsDisplay.setMap(map);
+}
+
+function calcRoute() {
+    var start = document.getElementById('start').value;
+    var end = document.getElementById('end').value;
+    var request = {
+        origin: start,
+        destination: end,
+        travelMode: google.maps.DirectionsTravelMode.WALKING
+    };
+    directionsService.route(request, function (response, status) {
+        if (status == google.maps.DirectionsStatus.OK) {
+            directionsDisplay.setDirections(response);
+        } else { alert("Directions request failed:"+status); }
+    });
+}
+
+google.maps.event.addDomListener(window, 'load', initialize);
+
+</script>
+
+ </head>
+  <body>
+    <div id="panel">
+ <b>From: </b>
+
+<select id="start" onchange="calcRoute();">
+   <option value="13.0263893,77.56309190000002">Aerospace Dept.</option>
+    <option value="13.0272004,77.56389450000006">Air Field</option>
+    <option value="12.9715987,77.59456269999998">Amneties Hall</option>
+    <option value="13.0176676,77.56635189999997">Amra Marg</option>
+    <option value="13.0175605,77.56408520000002">Arjuna Marg</option>
+    <option value="13.0147808,77.57009900000003">Ashoka Marg</option>
+    <option value="13.0194463,77.56480770000007">Ashwini Hostel</option>
+    <option value="13.0144723,77.56895629999997">Badami Marg</option>
+    <option value="13.0193213,77.56355129999997">Bank Road</option>
+    <option value="13.0194463,77.56480770000007">Bharani Hostel</option>
+    <option value="13.0249729,77.5630099">B Wing Physical Sciences Building</option>
+    <option value="13.0194463,77.56480770000007">Cafeteria@Faculty Club</option>
+    <option value="13.0237029,77.5660944">Center Of Neuroscience</option>
+    <option value="13.017045,77.5707304">CES</option>
+    <option value="13.0194463,77.56480770000007">Cricket Ground</option>
+    <option value="13.0153223,77.57133759999999">Deptt. Of Electrical Engineering</option>
+    <option value="13.0169006,77.56872390000001">Deptt. Of Inorganic and Physical Chemistry</option>
+    <option value="13.018314,77.57002080000007">Deptt. Of Mathematics</option>
+    <option value="13.0150901,77.56941180000001">Deptt. Of Metallurgy</option>
+    <option value="13.0204703,77.56287309999993">Divya Landmark</option>
+    <option value="13.0229712,77.56595219999997">Electrical Communication Engineering</option>
+    <option value="13.0148882,77.56616120000001">Gulmohar Marg</option>
+    <option value="13.0084186,77.57053919999998">Gym Cafe</option>
+    <option value="13.019446300000000000,77.56480770000007">Hoysala house</option>
+    <option value="13.016768200000000000,77.566138799999980000">Indian Institute Of Science</option>
+    <option value="13.0126365,77.55549350000001">IISc Gymkhana</option>
+    <option value="13.0092581,77.56300369999997">IISc PD Block Hostel</option>
+    <option value="13.0173126,77.5679543">IISc Plant Nursery</option>
+    <option value="13.0162135,77.56615349999993">JRD Tata library</option>
+    <option value="13.0084186,77.57053919999998">Jawahar Guest House</option>
+    <option value="13.018105,77.561404">Kaveri</option>
+    <option value="13.015931,77.564699">Madhuka Marg</option>
+    <option value="13.01631,77.566247">Mahogany Marg</option>
+    <option value="13.016843,77.564452">Mandhara Marg</option>
+    <option value="13.030063,77.564971">Mechanical Engineering Block</option>
+     <option value="13.018314,77.56274">Mess-C</option>
+    <option value="13.018314,77.56274">Microelectronics and Photonics Lab</option>
+    <option value="13.015868,77.570103">Mirinji Marg</option>
+    <option value="13.017572,77.569822">Molecular Bio Physics Unit</option>
+    <option value="13.0309,77.563555">National Institute Of Advanced Studies</option>
+    <option value="13.016276,77.562391">N-Block</option>
+    <option value="12.9715987,77.5945626559999998">New Biological Sciences Block</option>
+    <option value="13.017081,77.563764">New Girls Hostel</option>
+    <option value="13.030231,77.562439">NIAS Road</option>
+    <option value="13.028678,77.562172">Premier Green Apartment</option>
+    <option value="13.01384,77.562997">Porcelain Factory</option>
+    <option value="13.016955,77.570425">SERC</option>
+    <option value="13.014604,77.570455">Solid State and Structural Chemistry Lab</option>
+    <option value="13.01499,77.562477">Shaolin Chu Kungfu School</option>
+    <option value="13.026342,77.566302">Suveera Technology</option>
+    <option value="13.020572,77.570232">Swimming Pool</option>
+    <option value="13.016412,77.566296">Tata Marg</option>
+    <option value="13.017771,77.564721">Tata Memorial Clubs Ground</option>
+    <option value="13.014781,77.568174">Tata Book House</option>
+    <option value="13.014781,77.568174">U-Block</option>
+    <option value="13.015994,77.565696">UG Office</option>
+    <option value="13.024398,77.564181">Vespiary</option>
+    <option value="13.024022,77.566732">Water Tank</option>
+    
+
+</select> <b>To: </b>
+
+<select id="end" onchange="calcRoute();">
+   <option value="13.0263893,77.56309190000002">Aerospace Dept.</option>
+    <option value="13.0272004,77.56389450000006">Air Field</option>
+    <option value="12.9715987,77.59456269999998">Amneties Hall</option>
+    <option value="13.0176676,77.56635189999997">Amra Marg</option>
+    <option value="13.0175605,77.56408520000002">Arjuna Marg</option>
+    <option value="13.0147808,77.57009900000003">Ashoka Marg</option>
+    <option value="13.0194463,77.56480770000007">Ashwini Hostel</option>
+    <option value="13.0144723,77.56895629999997">Badami Marg</option>
+    <option value="13.0193213,77.56355129999997">Bank Road</option>
+    <option value="13.0194463,77.56480770000007">Bharani Hostel</option>
+    <option value="13.0249729,77.5630099">B Wing Physical Sciences Building</option>
+    <option value="13.0194463,77.56480770000007">Cafeteria@Faculty Club</option>
+    <option value="13.0237029,77.5660944">Center Of Neuroscience</option>
+    <option value="13.017045,77.5707304">CES</option>
+    <option value="13.0194463,77.56480770000007">Cricket Ground</option>
+    <option value="13.0153223,77.57133759999999">Deptt. Of Electrical Engineering</option>
+    <option value="13.0169006,77.56872390000001">Deptt. Of Inorganic and Physical Chemistry</option>
+    <option value="13.018314,77.57002080000007">Deptt. Of Mathematics</option>
+    <option value="13.0150901,77.56941180000001">Deptt. Of Metallurgy</option>
+    <option value="13.0204703,77.56287309999993">Divya Landmark</option>
+    <option value="13.0229712,77.56595219999997">Electrical Communication Engineering</option>
+    <option value="13.0148882,77.56616120000001">Gulmohar Marg</option>
+    <option value="13.0084186,77.57053919999998">Gym Cafe</option>
+    <option value="13.019446300000000000,77.56480770000007">Hoysala house</option>
+    <option value="13.016768200000000000,77.566138799999980000">Indian Institute Of Science</option>
+    <option value="13.0126365,77.55549350000001">IISc Gymkhana</option>
+    <option value="13.0092581,77.56300369999997">IISc PD Block Hostel</option>
+    <option value="13.0173126,77.5679543">IISc Plant Nursery</option>
+    <option value="13.0162135,77.56615349999993">JRD Tata library</option>
+    <option value="13.0084186,77.57053919999998">Jawahar Guest House</option>
+    <option value="13.018105,77.561404">Kaveri</option>
+    <option value="13.015931,77.564699">Madhuka Marg</option>
+    <option value="13.01631,77.566247">Mahogany Marg</option>
+    <option value="13.016843,77.564452">Mandhara Marg</option>
+    <option value="13.030063,77.564971">Mechanical Engineering Block</option>
+     <option value="13.018314,77.56274">Mess-C</option>
+    <option value="13.018314,77.56274">Microelectronics and Photonics Lab</option>
+    <option value="13.015868,77.570103">Mirinji Marg</option>
+    <option value="13.017572,77.569822">Molecular Bio Physics Unit</option>
+    <option value="13.0309,77.563555">National Institute Of Advanced Studies</option>
+    <option value="13.016276,77.562391">N-Block</option>
+    <option value="12.9715987,77.5945626559999998">New Biological Sciences Block</option>
+    <option value="13.017081,77.563764">New Girls Hostel</option>
+    <option value="13.030231,77.562439">NIAS Road</option>
+    <option value="13.028678,77.562172">Premier Green Apartment</option>
+    <option value="13.01384,77.562997">Porcelain Factory</option>
+    <option value="13.016955,77.570425">SERC</option>
+    <option value="13.014604,77.570455">Solid State and Structural Chemistry Lab</option>
+    <option value="13.01499,77.562477">Shaolin Chu Kungfu School</option>
+    <option value="13.026342,77.566302">Suveera Technology</option>
+    <option value="13.020572,77.570232">Swimming Pool</option>
+    <option value="13.016412,77.566296">Tata Marg</option>
+    <option value="13.017771,77.564721">Tata Memorial Clubs Ground</option>
+    <option value="13.014781,77.568174">Tata Book House</option>
+    <option value="13.014781,77.568174">U-Block</option>
+    <option value="13.015994,77.565696">UG Office</option>
+    <option value="13.024398,77.564181">Vespiary</option>
+    <option value="13.024022,77.566732">Water Tank</option>
+</select>
+<div id="map" style="position:relative;width:500px;height:300px"></div>
+
+<div id="map-canvas"></div>
+    &nbsp;
+    <div id="warnings_panel" style="width:100%;height:10%;text-align:center"></div>
+  </body>
+</html>
